@@ -1,0 +1,32 @@
+version: '3.4'
+
+x-build:
+  - &build-args
+    APP_ENV: 'prod'
+    APP_DEBUG: '0'
+  - &build-cache
+    - ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:prod
+    - ${NGINX_IMAGE:-vuongxuongminh/docker-helm-symfony-nginx}:prod
+
+services:
+  php-fpm:
+    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:prod
+    build:
+      cache_from: *build-cache
+      args:
+        << : *build-args
+
+  php-supervisor:
+    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:prod
+    build:
+      cache_from: *build-cache
+      args:
+        << : *build-args
+
+  nginx:
+    image: ${NGINX_IMAGE:-vuongxuongminh/docker-helm-symfony-nginx}:prod
+    build:
+      cache_from:
+        << : *build-cache
+      args:
+        << : *build-args

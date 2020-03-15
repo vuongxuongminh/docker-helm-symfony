@@ -1,0 +1,47 @@
+version: '3.4'
+
+x-build:
+  - &build-args
+    PHP_VERSION: '7.4.3'
+    NGINX_VERSION: '1.17'
+
+services:
+  php-fpm:
+    command: ['fpm']
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      target: php
+      args:
+        << : *build-args
+    healthcheck:
+      test: ["CMD", "docker-healthcheck", "fpm"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+
+  php-supervisor:
+    command: ['supervisor']
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      target: php
+      args:
+        << : *build-args
+    healthcheck:
+      test: ["CMD", "docker-healthcheck", "supervisor"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      target: nginx
+      args:
+        << : *build-args
+    depends_on:
+      - php-fpm
