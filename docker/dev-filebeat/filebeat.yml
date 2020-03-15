@@ -8,8 +8,8 @@ filebeat.inputs:
     json:
       keys_under_root: true
     paths:
-      - /usr/share/filebeat/logs/fpm/*.log
-      - /usr/share/filebeat/logs/php/*.log
+      - ${path.config}/logs/fpm/*.log
+      - ${path.config}/logs/php/*.log
 
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]

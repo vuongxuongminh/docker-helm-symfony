@@ -1,7 +1,7 @@
 - module: nginx
   access:
     enabled: true
-    var.paths: ["/usr/share/filebeat/logs/nginx/symfony_access.log*"]
+    var.paths: ["${path.config}/logs/nginx/symfony_access.log*"]
   error:
     enabled: true
-    var.paths: ["/usr/share/filebeat/logs/nginx/symfony_error.log*"]
+    var.paths: ["${path.config}/logs/nginx/symfony_error.log*"]
