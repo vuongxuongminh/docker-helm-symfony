@@ -9,7 +9,7 @@ filebeat.inputs:
       keys_under_root: true
     paths:
       - ${path.config}/logs/fpm/*.log
-      - ${path.config}/logs/php/*.log
+      - ${path.config}/logs/supervisor/*.log
 
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]
