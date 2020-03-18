@@ -15,7 +15,7 @@ services:
       args:
         << : *build-args
     healthcheck:
-      test: ["CMD", "docker-healthcheck", "fpm"]
+      test: ['CMD', 'docker-healthcheck', 'fpm']
       interval: 10s
       timeout: 3s
       retries: 3
@@ -30,7 +30,7 @@ services:
       args:
         << : *build-args
     healthcheck:
-      test: ["CMD", "docker-healthcheck", "supervisor"]
+      test: ['CMD', 'docker-healthcheck', 'supervisor']
       interval: 10s
       timeout: 3s
       retries: 3
