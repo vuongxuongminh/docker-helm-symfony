@@ -40,8 +40,8 @@ services:
         << : *build-args
     environment:
       << : *build-args
-      SUPERVISORD_USERNAME: root
-      SUPERVISORD_PASSWORD: root
+      SUPERVISOR_USERNAME: root
+      SUPERVISOR_PASSWORD: root
     volumes:
       - ./symfony:/app:rw,cached
       - supervisor-log-data:/app/var/log:rw

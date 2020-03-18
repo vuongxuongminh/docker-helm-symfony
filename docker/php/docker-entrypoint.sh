@@ -28,8 +28,8 @@ if [ "$1" = 'fpm' ] || [ "$1" = 'supervisor' ]; then
     { \
       echo '[inet_http_server]'; \
       echo 'port = *:9000'; \
-      echo "username = ${SUPERVISORD_USERNAME:-root}"; \
-      echo "password = ${SUPERVISORD_PASSWORD:-root}"; \
+      echo "username = ${SUPERVISOR_USERNAME:-root}"; \
+      echo "password = ${SUPERVISOR_PASSWORD:-root}"; \
     } >> /var/supervisord/supervisord.conf
 
     set -- supervisord -c /var/supervisord/supervisord.conf
