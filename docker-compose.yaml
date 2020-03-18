@@ -6,7 +6,7 @@ x-build:
     NGINX_VERSION: '1.17'
 
 services:
-  php-fpm:
+  fpm:
     command: ['fpm']
     build:
       context: .
@@ -21,7 +21,7 @@ services:
       retries: 3
       start_period: 30s
 
-  php-supervisor:
+  supervisor:
     command: ['supervisor']
     build:
       context: .
@@ -44,4 +44,4 @@ services:
       args:
         << : *build-args
     depends_on:
-      - php-fpm
+      - fpm

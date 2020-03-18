@@ -9,14 +9,14 @@ x-build:
     - ${NGINX_IMAGE:-vuongxuongminh/docker-helm-symfony-nginx}:prod
 
 services:
-  php-fpm:
+  fpm:
     image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:prod
     build:
       cache_from: *build-cache
       args:
         << : *build-args
 
-  php-supervisor:
+  supervisor:
     image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:prod
     build:
       cache_from: *build-cache
