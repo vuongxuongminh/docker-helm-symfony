@@ -129,7 +129,18 @@ ENTRYPOINT ["docker-entrypoint"]
 # "nginx" stage
 FROM nginx:${NGINX_VERSION}-alpine AS nginx
 
-COPY /docker/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=php /app/public /app/public
+# Add curl for health check.
+RUN set -eux; \
+    apk add curl --no-cache
 
 WORKDIR /app/public
+
+COPY /docker/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.stuff
+COPY /docker/nginx/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY /docker/nginx/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
+COPY --from=php /app/public /app/public
+
+RUN chmod +x /usr/local/bin/docker-entrypoint /usr/local/bin/docker-healthcheck
+
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["nginx", "-g", "daemon off;"]

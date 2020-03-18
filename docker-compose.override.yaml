@@ -58,6 +58,9 @@ services:
       cache_from: *build-cache
       args:
         << : *build-args
+    environment:
+      # `fpm` container name use to pass request via `fastcgi_pass`, it useful when you want to change `fpm` service name or container name of it.
+      FPM_SERVICE: fpm
     volumes:
     - ./symfony/public:/app/public:rw,cached
     - nginx-log-data:/var/log/nginx:rw

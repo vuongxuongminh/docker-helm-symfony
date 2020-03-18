@@ -43,5 +43,11 @@ services:
       target: nginx
       args:
         << : *build-args
+    healthcheck:
+      test: ['CMD', 'docker-healthcheck']
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
     depends_on:
       - fpm
