@@ -1,10 +1,5 @@
 version: '3.4'
 
-x-build:
-  - &build-args
-    PHP_VERSION: '7.4.3'
-    NGINX_VERSION: '1.17'
-
 services:
   fpm:
     command: ['fpm']
@@ -12,8 +7,6 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile
       target: php
-      args:
-        << : *build-args
     healthcheck:
       test: ['CMD', 'docker-healthcheck', 'fpm']
       interval: 10s
@@ -27,8 +20,6 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile
       target: php
-      args:
-        << : *build-args
     healthcheck:
       test: ['CMD', 'docker-healthcheck', 'supervisor']
       interval: 10s
@@ -41,8 +32,6 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile
       target: nginx
-      args:
-        << : *build-args
     healthcheck:
       test: ['CMD', 'docker-healthcheck']
       interval: 10s

@@ -11,12 +11,29 @@ x-build:
 services:
   mysql:
     image: mysql:8
-    command: ["--default-authentication-plugin=mysql_native_password"]
+    command: ['--default-authentication-plugin=mysql_native_password']
     environment:
       MYSQL_DATABASE: 'test'
       MYSQL_ROOT_PASSWORD: 'root'
     volumes:
       - db-data:/var/lib/mysql
+
+  setup:
+    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
+    command: ['setup']
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      target: php
+      cache_from: *build-cache
+      args:
+        << : *build-args
+    environment:
+      << : *build-args
+    volumes:
+      - ./symfony:/app:rw
+    depends_on:
+      - mysql
 
   fpm:
     image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
