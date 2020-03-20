@@ -26,7 +26,6 @@ services:
   nginx:
     image: ${NGINX_IMAGE:-vuongxuongminh/docker-helm-symfony-nginx}:prod
     build:
-      cache_from:
-        << : *build-cache
+      cache_from: *build-cache
       args:
         << : *build-args
