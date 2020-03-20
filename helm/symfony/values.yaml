@@ -1,0 +1,103 @@
+# Use this set to assign a list of default pullSecrets
+#  - name: docker-registry-secret
+#  - name: internal-registry-secret
+imagePullSecrets: []
+
+imagePullPolicy: Always
+
+php:
+  image:
+    repository: vuongxuongminh/docker-helm-symfony-php
+    tag: prod
+  supervisor:
+    basicAuth:
+      username: 'user'
+      password: '!ChangeMe!'
+    replicaCount: 1
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    ## Additional deployment annotations
+    podAnnotations: {}
+    resources: {}
+    # requests:
+    #   cpu: 100m
+    #   memory: 256Mi
+  fpm:
+    replicaCount: 1
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    ## Additional deployment annotations
+    podAnnotations: {}
+    resources: {}
+    # requests:
+    #   cpu: 100m
+    #   memory: 256Mi
+  env: prod
+  debug: '0'
+  secret: '!ChangeMe!'
+  corsAllowOrigin: '^https?://.*?\\.example\\.com$'
+  trustedHosts: '^.*\\.example\\.com$'
+  trustedProxies:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
+nginx:
+  image:
+    repository: vuongxuongminh/docker-helm-symfony-nginx
+    tag: prod
+  replicaCount: 1
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  ## Additional deployment annotations
+  podAnnotations: {}
+  resources: {}
+  # requests:
+  #   cpu: 100m
+  #   memory: 256Mi
+
+ingress:
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  tls: false
+  nginx:
+    host: 'nginx.example'
+    # Tls secret name only affect when `tls` is true.
+    tlsSecretName: 'nginx-tls'
+  supervisor:
+    host: 'supervisor.example'
+    # Tls secret name only affect when `tls` is true.
+    tlsSecretName: 'supervisor-tls'
+
+mysql:
+  internal: true
+  mysqlDatabase: test
+  mysqlUser: user
+  mysqlPassword: '!ChangeMe!'
+#  mysqlRootPassword: 'root'
+
+  # Persist data to a persistent volume
+  persistence:
+    enabled: false
+  # See more config at https://github.com/helm/charts/tree/master/stable/mysql
+
+  # Set when you want to use external MySQL. Affect only `mysql.internal` is false.
+  externalDsn: 'mysql://user:password@example:3306/test?serverVersion=5.7'
+
+rabbitmq:
+  internal: true
+  persistence:
+    enabled: false
+  service:
+    port: 5672
+  rabbitmq:
+    username: user
+    password: '!ChangeMe!'
+  # See more config at https://github.com/bitnami/charts/blob/master/bitnami/rabbitmq
+
+  # Set when you want to use external RabbitMQ. Affect only `rabbitmq.internal` is false.
+  externalDsn: 'amqp://user:password@example:5672/%2f/messages'

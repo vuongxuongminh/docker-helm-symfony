@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "supervisor" . }}
+  labels:
+{{ include "labels" . | indent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: supervisor
+      port: 9000
+      targetPort: 9000
+  selector:
+{{ include "matchLabels" . | indent 4 }}
+    component: supervisor

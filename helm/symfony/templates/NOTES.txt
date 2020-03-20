@@ -1,0 +1,5 @@
+Now you can access:
+
+Symfony: {{ .Values.ingress.nginx.host }}
+
+Supervisor management: {{ .Values.ingress.supervisor.host }}
