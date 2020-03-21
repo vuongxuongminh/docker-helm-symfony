@@ -5,26 +5,26 @@ x-build:
     APP_ENV: 'prod'
     APP_DEBUG: '0'
   - &build-cache
-    - ${PHP_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony/php}:prod
-    - ${NGINX_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony/nginx}:prod
+    - ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:prod
+    - ${NGINX_IMAGE:-vuongxuongminh/docker-helm-symfony-nginx}:prod
 
 services:
   fpm:
-    image: ${PHP_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony/php}:prod
+    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:prod
     build:
       cache_from: *build-cache
       args:
         << : *build-args
 
   supervisor:
-    image: ${PHP_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony/php}:prod
+    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:prod
     build:
       cache_from: *build-cache
       args:
         << : *build-args
 
   nginx:
-    image: ${NGINX_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony/nginx}:prod
+    image: ${NGINX_IMAGE:-vuongxuongminh/docker-helm-symfony-nginx}:prod
     build:
       cache_from: *build-cache
       args:
