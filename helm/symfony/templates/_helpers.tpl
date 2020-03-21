@@ -53,9 +53,13 @@ app: "{{ template "name" . }}"
   {{- printf "%s-nginx" (include "fullname" .) -}}
 {{- end -}}
 
+{{- define "hook" -}}
+    {{- printf "%s-hook" (include "fullname" .) -}}
+{{- end -}}
+
 {{- define "databaseDsn" -}}
   {{- if .Values.mysql.internal }}
-    {{- printf "mysql://%s:%s@%s/%s?serverVersion=5.7" (.Values.mysql.mysqlUser | quote) (.Values.mysql.mysqlPassword | quote) (include "mysql.fullname" .) (.Values.mysql.mysqlDatabase | quote) -}}
+    {{- printf "mysql://%s:%s@%s/%s?serverVersion=5.7" (.Values.mysql.mysqlUser) (.Values.mysql.mysqlPassword) (.Values.mysql.fullnameOverride) (.Values.mysql.mysqlDatabase) -}}
   {{- else }}
     {{- .Values.mysql.externalDsn -}}
   {{- end }}
@@ -63,7 +67,7 @@ app: "{{ template "name" . }}"
 
 {{- define "messengerTransportDsn" -}}
   {{- if .Values.mysql.internal }}
-    {{- printf "amqp://%s:%s@%s:%d/%s" (.Values.rabbitmq.rabbitmq.username | quote) (.Values.rabbitmq.rabbitmq.password | quote) (.Values.rabbitmq.service.port | quote) (include "rabbitmq.fullname" .) "%2f" -}}
+    {{- printf "amqp://%s:%s@%s:%s/%s" (.Values.rabbitmq.rabbitmq.username) (.Values.rabbitmq.rabbitmq.password) (.Values.rabbitmq.fullnameOverride) (.Values.rabbitmq.service.port | toString) "%2f" -}}
   {{- else }}
     {{- .Values.rabbitmq.externalDsn -}}
   {{- end }}
