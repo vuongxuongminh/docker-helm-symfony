@@ -64,11 +64,11 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   tls: false
   nginx:
-    host: 'nginx.example'
+    hostName: 'nginx.example'
     # Tls secret name only affect when `tls` bellow is true.
     tlsSecret: 'nginx-tls'
   supervisor:
-    host: 'supervisor.example'
+    hostName: 'supervisor.example'
     # Tls secret name only affect when `tls` bellow is true.
     tlsSecret: 'supervisor-tls'
 
@@ -110,7 +110,7 @@ rabbitmq:
     enabled: true
     tls: false
     # Tls secret only affect when `tls` bellow is true.
-    tlsSecret: '!ChangeMe!'
+    tlsSecret: 'rabbitmq-tls'
     hostName: 'rabbitmq.example'
     annotations: {}
   nodeSelector: {}

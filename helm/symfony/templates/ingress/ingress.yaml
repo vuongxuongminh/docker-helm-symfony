@@ -13,10 +13,10 @@ spec:
 {{- if .Values.ingress.tls }}
   tls:
     - hosts:
-        - {{ .Values.ingress.nginx.host | quote }}
+        - {{ .Values.ingress.nginx.hostName | quote }}
       secretName: {{ .Values.ingress.nginx.tlsSecret | quote }}
     - hosts:
-        - {{ .Values.ingress.supervisor.host | quote }}
+        - {{ .Values.ingress.supervisor.hostName | quote }}
       secretName: {{ .Values.ingress.supervisor.tlsSecret | quote }}
 {{- end }}
   rules:
@@ -26,11 +26,11 @@ spec:
             backend:
               serviceName: {{ template "nginx" . }}
               servicePort: 80
-      host: {{ .Values.ingress.nginx.host | quote }}
+      host: {{ .Values.ingress.nginx.hostName | quote }}
     - http:
         paths:
           - path: /
             backend:
               serviceName: {{ template "supervisor" . }}
               servicePort: 9000
-      host: {{ .Values.ingress.supervisor.host | quote }}
+      host: {{ .Values.ingress.supervisor.hostName | quote }}
