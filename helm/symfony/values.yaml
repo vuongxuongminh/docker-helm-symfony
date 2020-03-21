@@ -34,10 +34,9 @@ php:
     # requests:
     #   cpu: 100m
     #   memory: 256Mi
-  env: prod
+  env: 'prod'
   debug: '0'
   secret: '!ChangeMe!'
-  corsAllowOrigin: '^https?://.*?\\.example\\.com$'
   trustedHosts: '^.*\\.example\\.com$'
   trustedProxies:
     - 10.0.0.0/8
@@ -65,13 +64,13 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   tls: false
   nginx:
-    host: 'nginx.example'
+    hostName: 'nginx.example'
     # Tls secret name only affect when `tls` bellow is true.
-    tlsSecretName: 'nginx-tls'
+    tlsSecret: 'nginx-tls'
   supervisor:
-    host: 'supervisor.example'
+    hostName: 'supervisor.example'
     # Tls secret name only affect when `tls` bellow is true.
-    tlsSecretName: 'supervisor-tls'
+    tlsSecret: 'supervisor-tls'
 
 mysql:
   internal: true
@@ -92,7 +91,7 @@ mysql:
   # See more config at https://github.com/helm/charts/tree/master/stable/mysql
 
   # Set when you want to use external MySQL. Affect only `mysql.internal` is false.
-  externalDsn: 'mysql://user:password@example:3306/test?serverVersion=5.7'
+  externalDsn: ''
 
 rabbitmq:
   internal: true
@@ -111,7 +110,7 @@ rabbitmq:
     enabled: true
     tls: false
     # Tls secret only affect when `tls` bellow is true.
-    tlsSecret: '!ChangeMe!'
+    tlsSecret: 'rabbitmq-tls'
     hostName: 'rabbitmq.example'
     annotations: {}
   nodeSelector: {}
@@ -123,4 +122,4 @@ rabbitmq:
   # See more config at https://github.com/bitnami/charts/blob/master/bitnami/rabbitmq
 
   # Set when you want to use external RabbitMQ. Affect only `rabbitmq.internal` is false.
-  externalDsn: 'amqp://user:password@example:5672/%2f/messages'
+  externalDsn: ''
