@@ -7,7 +7,7 @@ imagePullPolicy: Always
 
 php:
   image:
-    repository: docker.pkg.github.com/vuongxuongminh/docker-helm-symfony-php
+    repository: docker.pkg.github.com/vuongxuongminh/docker-helm-symfony/php
     tag: prod
   supervisor:
     basicAuth:
@@ -46,7 +46,7 @@ php:
 
 nginx:
   image:
-    repository: docker.pkg.github.com/vuongxuongminh/docker-helm-symfony-nginx
+    repository: docker.pkg.github.com/vuongxuongminh/docker-helm-symfony/nginx
     tag: prod
   replicaCount: 1
   nodeSelector: {}
