@@ -14,10 +14,10 @@ spec:
   tls:
     - hosts:
         - {{ .Values.ingress.nginx.host | quote }}
-      secretName: {{ .Values.ingress.nginx.tlsSecretName | quote }}
+      secretName: {{ .Values.ingress.nginx.tlsSecret | quote }}
     - hosts:
         - {{ .Values.ingress.supervisor.host | quote }}
-      secretName: {{ .Values.ingress.supervisor.tlsSecretName | quote }}
+      secretName: {{ .Values.ingress.supervisor.tlsSecret | quote }}
 {{- end }}
   rules:
     - http:

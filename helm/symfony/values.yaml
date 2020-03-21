@@ -34,10 +34,9 @@ php:
     # requests:
     #   cpu: 100m
     #   memory: 256Mi
-  env: prod
+  env: 'prod'
   debug: '0'
   secret: '!ChangeMe!'
-  corsAllowOrigin: '^https?://.*?\\.example\\.com$'
   trustedHosts: '^.*\\.example\\.com$'
   trustedProxies:
     - 10.0.0.0/8
@@ -67,11 +66,11 @@ ingress:
   nginx:
     host: 'nginx.example'
     # Tls secret name only affect when `tls` bellow is true.
-    tlsSecretName: 'nginx-tls'
+    tlsSecret: 'nginx-tls'
   supervisor:
     host: 'supervisor.example'
     # Tls secret name only affect when `tls` bellow is true.
-    tlsSecretName: 'supervisor-tls'
+    tlsSecret: 'supervisor-tls'
 
 mysql:
   internal: true
