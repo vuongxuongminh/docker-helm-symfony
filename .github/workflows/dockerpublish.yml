@@ -2,20 +2,16 @@ name: Docker
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
     branches:
       - master
-  # Run tests for any PRs.
-  pull_request:
-
 env:
-  PHP_IMAGE: vuongxuongminh/docker-helm-symfony-php
-  NGINX_IMAGE: vuongxuongminh/docker-helm-symfony-nginx
+  PHP_IMAGE: docker.pkg.github.com/vuongxuongminh/docker-helm-symfony-php
+  NGINX_IMAGE: docker.pkg.github.com/vuongxuongminh/docker-helm-symfony-nginx
 
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
-  test-build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
