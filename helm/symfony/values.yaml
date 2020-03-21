@@ -91,7 +91,7 @@ mysql:
   # See more config at https://github.com/helm/charts/tree/master/stable/mysql
 
   # Set when you want to use external MySQL. Affect only `mysql.internal` is false.
-  externalDsn: 'mysql://user:password@example:3306/test?serverVersion=5.7'
+  externalDsn: ''
 
 rabbitmq:
   internal: true
@@ -122,4 +122,4 @@ rabbitmq:
   # See more config at https://github.com/bitnami/charts/blob/master/bitnami/rabbitmq
 
   # Set when you want to use external RabbitMQ. Affect only `rabbitmq.internal` is false.
-  externalDsn: 'amqp://user:password@example:5672/%2f/messages'
+  externalDsn: ''
