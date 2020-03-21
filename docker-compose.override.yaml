@@ -5,8 +5,8 @@ x-build:
     APP_ENV: 'dev'
     APP_DEBUG: '1'
   - &build-cache
-    - ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
-    - ${NGINX_IMAGE:-vuongxuongminh/docker-helm-symfony-nginx}:dev
+    - ${PHP_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony-php}:dev
+    - ${NGINX_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony-nginx}:dev
 
 services:
   mysql:
@@ -19,7 +19,7 @@ services:
       - db-data:/var/lib/mysql
 
   setup:
-    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
+    image: ${PHP_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony-php}:dev
     command: ['setup']
     build:
       context: .
@@ -36,7 +36,7 @@ services:
       - mysql
 
   fpm:
-    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
+    image: ${PHP_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony-php}:dev
     build:
       cache_from: *build-cache
       args:
@@ -50,7 +50,7 @@ services:
       - mysql
 
   supervisor:
-    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
+    image: ${PHP_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony-php}:dev
     build:
       cache_from: *build-cache
       args:
@@ -70,7 +70,7 @@ services:
       - mysql
 
   nginx:
-    image: ${NGINX_IMAGE:-vuongxuongminh/docker-helm-symfony-nginx}:dev
+    image: ${NGINX_IMAGE:-docker.pkg.github.com/vuongxuongminh/docker-helm-symfony-nginx}:dev
     build:
       cache_from: *build-cache
       args:
