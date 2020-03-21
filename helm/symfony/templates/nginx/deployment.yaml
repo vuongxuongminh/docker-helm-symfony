@@ -3,23 +3,23 @@ kind: Deployment
 metadata:
   name: {{ template "nginx" . }}
   labels:
-{{ include "labels" . | indent 4 }}
+    {{- include "labels" . | nindent 4 }}
     component: nginx
 spec:
   replicas: {{ .Values.nginx.replicaCount }}
   selector:
     matchLabels:
-{{ include "matchLabels" . | indent 6 }}
+      {{- include "matchLabels" . | nindent 6 }}
       component: nginx
   template:
     metadata:
       labels:
-{{ include "labels" . | indent 8 }}
+        {{- include "labels" . | nindent 8 }}
         component: nginx
+      {{- with .Values.nginx.podAnnotations }}
       annotations:
-{{- if .Values.nginx.podAnnotations }}
-{{ toYaml .Values.nginx.podAnnotations | indent 8 }}
-{{- end }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -44,22 +44,22 @@ spec:
           env:
             - name: FPM_SERVICE
               value: {{ template "fpm" . }}
-          {{- if .Values.nginx.resources }}
+          {{- with .Values.nginx.resources }}
           resources:
-          {{ toYaml .Values.nginx.resources | indent 10 }}
+          {{- toYaml . | nindent 10 }}
           {{- end }}
           ports:
             - containerPort: 80
               name: http
       {{- with .Values.nginx.nodeSelector }}
       nodeSelector:
-      {{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nginx.affinity }}
       affinity:
-      {{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nginx.tolerations }}
       tolerations:
-    {{ toYaml . | indent 8 }}
-  {{- end }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}

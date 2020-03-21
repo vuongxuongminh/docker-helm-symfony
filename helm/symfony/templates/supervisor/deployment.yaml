@@ -3,27 +3,27 @@ kind: Deployment
 metadata:
   name: {{ template "supervisor" . }}
   labels:
-{{ include "labels" . | indent 4 }}
+    {{- include "labels" . | nindent 4 }}
     component: supervisor
 spec:
   replicas: {{ .Values.php.supervisor.replicaCount }}
   selector:
     matchLabels:
-{{ include "matchLabels" . | indent 6 }}
+      {{- include "matchLabels" . | nindent 6 }}
       component: supervisor
   template:
     metadata:
       labels:
-{{ include "labels" . | indent 8 }}
+        {{- include "labels" . | nindent 8 }}
         component: supervisor
+      {{- with .Values.php.supervisor.podAnnotations }}
       annotations:
-{{- if .Values.php.supervisor.podAnnotations }}
-{{ toYaml .Values.php.supervisor.podAnnotations | indent 8 }}
-{{- end }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
       - name: supervisor
@@ -54,22 +54,22 @@ spec:
               name: {{ template "php" . }}
           - secretRef:
               name: {{ template "supervisor" . }}
-{{- if .Values.php.supervisor.resources }}
+        {{- with .Values.php.supervisor.resources }}
         resources:
-{{ toYaml .Values.php.supervisor.resources | indent 10 }}
-{{- end }}
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
         ports:
         - containerPort: 9000
           name: supervisor
       {{- with .Values.php.supervisor.nodeSelector }}
       nodeSelector:
-{{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.php.supervisor.affinity }}
       affinity:
-{{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.php.supervisor.tolerations }}
       tolerations:
-{{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}

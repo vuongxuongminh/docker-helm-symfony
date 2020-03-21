@@ -3,27 +3,27 @@ kind: Deployment
 metadata:
   name: {{ template "fpm" . }}
   labels:
-{{ include "labels" . | indent 4 }}
+    {{- include "labels" . | nindent 4 }}
     component: fpm
 spec:
   replicas: {{ .Values.php.fpm.replicaCount }}
   selector:
     matchLabels:
-{{ include "matchLabels" . | indent 6 }}
+      {{- include "matchLabels" . | nindent 6 }}
       component: fpm
   template:
     metadata:
       labels:
-{{ include "labels" . | indent 8 }}
+        {{- include "labels" . | nindent 8 }}
         component: fpm
+      {{- with .Values.php.fpm.podAnnotations }}
       annotations:
-{{- if .Values.php.fpm.podAnnotations }}
-{{ toYaml .Values.php.fpm.podAnnotations | indent 8 }}
-{{- end }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
       - name: fpm
@@ -52,22 +52,22 @@ spec:
               name: {{ template "php" . }}
           - secretRef:
               name: {{ template "php" . }}
-{{- if .Values.php.fpm.resources }}
+        {{- with .Values.php.fpm.resources }}
         resources:
-{{ toYaml .Values.php.fpm.resources | indent 10 }}
-{{- end }}
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
         ports:
         - containerPort: 9000
           name: fpm
-    {{- with .Values.php.fpm.nodeSelector }}
+      {{- with .Values.php.fpm.nodeSelector }}
       nodeSelector:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.php.fpm.affinity }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.php.fpm.affinity }}
       affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.php.fpm.tolerations }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.php.fpm.tolerations }}
       tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}

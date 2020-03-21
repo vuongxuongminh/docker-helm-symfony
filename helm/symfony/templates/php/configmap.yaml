@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ template "php" . }}
   labels:
-{{ include "labels" . | indent 4 }}
+    {{- include "labels" . | nindent 4 }}
 data:
   APP_ENV: {{ .Values.php.env | quote }}
   APP_DEBUG: {{ .Values.php.debug | quote }}

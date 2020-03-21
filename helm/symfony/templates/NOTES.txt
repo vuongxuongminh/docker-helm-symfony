@@ -1,5 +1,7 @@
 Now you can access:
 
-Symfony: {{ .Values.ingress.nginx.host }}
-
+Your Symfony app: {{ .Values.ingress.nginx.host }}
 Supervisor management: {{ .Values.ingress.supervisor.host }}
+{{- if .Values.rabbitmq.ingress.enabled }}
+RabbitMQ management: {{ .Values.rabbitmq.ingress.hostName }}
+{{- end }}

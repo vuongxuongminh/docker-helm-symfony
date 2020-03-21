@@ -66,23 +66,29 @@ ingress:
   tls: false
   nginx:
     host: 'nginx.example'
-    # Tls secret name only affect when `tls` is true.
+    # Tls secret name only affect when `tls` bellow is true.
     tlsSecretName: 'nginx-tls'
   supervisor:
     host: 'supervisor.example'
-    # Tls secret name only affect when `tls` is true.
+    # Tls secret name only affect when `tls` bellow is true.
     tlsSecretName: 'supervisor-tls'
 
 mysql:
   internal: true
+  # TODO: Move it to _helpers.tpl when issue: https://github.com/helm/helm/issues/3920 solved
+  fullnameOverride: 'sub-chart-mysql'
   mysqlDatabase: test
   mysqlUser: user
   mysqlPassword: '!ChangeMe!'
 #  mysqlRootPassword: 'root'
-
   # Persist data to a persistent volume
   persistence:
     enabled: false
+  nodeSelector: {}
+  tolerations: []
+  ## Additional deployment annotations
+  podAnnotations: {}
+  resources: {}
   # See more config at https://github.com/helm/charts/tree/master/stable/mysql
 
   # Set when you want to use external MySQL. Affect only `mysql.internal` is false.
@@ -90,6 +96,10 @@ mysql:
 
 rabbitmq:
   internal: true
+  # TODO: Move it to _helpers.tpl when issue: https://github.com/helm/helm/issues/3920 solved
+  fullnameOverride: 'sub-chart-rabbitmq'
+  updateStrategy:
+    type: 'OnDelete'
   persistence:
     enabled: false
   service:
@@ -97,6 +107,19 @@ rabbitmq:
   rabbitmq:
     username: user
     password: '!ChangeMe!'
+  ingress:
+    enabled: true
+    tls: false
+    # Tls secret only affect when `tls` bellow is true.
+    tlsSecret: '!ChangeMe!'
+    hostName: 'rabbitmq.example'
+    annotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  ## Additional deployment annotations
+  podAnnotations: {}
+  resources: {}
   # See more config at https://github.com/bitnami/charts/blob/master/bitnami/rabbitmq
 
   # Set when you want to use external RabbitMQ. Affect only `rabbitmq.internal` is false.
