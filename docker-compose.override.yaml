@@ -31,7 +31,7 @@ services:
     environment:
       << : *build-args
     volumes:
-      - ./symfony:/app:rw
+      - ./symfony:/symfony:rw
     depends_on:
       - mysql
 
@@ -44,8 +44,8 @@ services:
     environment:
       << : *build-args
     volumes:
-      - ./symfony:/app:rw,cached
-      - fpm-log-data:/app/var/log:rw
+      - ./symfony:/symfony:rw,cached
+      - fpm-log-data:/symfony/var/log:rw
     depends_on:
       - mysql
 
@@ -60,8 +60,8 @@ services:
       SUPERVISOR_USERNAME: root
       SUPERVISOR_PASSWORD: root
     volumes:
-      - ./symfony:/app:rw,cached
-      - supervisor-log-data:/app/var/log:rw
+      - ./symfony:/symfony:rw,cached
+      - supervisor-log-data:/symfony/var/log:rw
     ports:
       - target: 9000
         published: 9000
@@ -79,7 +79,7 @@ services:
       # `fpm` container name use to pass request via `fastcgi_pass`, it useful when you want to change `fpm` service name or container name of it.
       FPM_SERVICE: fpm
     volumes:
-    - ./symfony/public:/app/public:rw,cached
+    - ./symfony/public:/symfony/public:rw,cached
     - nginx-log-data:/var/log/nginx:rw
     ports:
     - target: 80

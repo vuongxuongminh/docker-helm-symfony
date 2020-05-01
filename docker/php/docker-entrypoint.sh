@@ -2,10 +2,10 @@
 set -e
 
 if [ "$1" = 'fpm' ] || [ "$1" = 'supervisor' ] || [ "$1" = 'setup' ]; then
-  mkdir -p /app/var/cache /app/var/log
+  mkdir -p /symfony/var/cache /symfony/var/log
 
-  setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX /app/var
-  setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX /app/var
+  setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX /symfony/var
+  setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX /symfony/var
 
 	if [ "$1" = 'supervisor' ]; then
 	  cp /var/supervisord/base.conf /var/supervisord/supervisord.conf
