@@ -1,4 +1,4 @@
-ARG PHP_VERSION='7.4.3'
+ARG PHP_VERSION='7.4.5'
 ARG NGINX_VERSION='1.17'
 
 # "php" stage
@@ -67,17 +67,17 @@ RUN if [ "${APP_ENV}" = 'prod' ]; then \
 COPY /docker/php/conf.d/$APP_ENV.ini $PHP_INI_DIR/conf.d/config.ini
 COPY /docker/php/supervisord /var/supervisord
 
-WORKDIR /app
+WORKDIR /symfony
 
 # Copy needed resources of app.
-COPY /symfony/composer.json /app/composer.json
-COPY /symfony/composer.lock /app/composer.lock
-COPY /symfony/symfony.lock /app/symfony.lock
-COPY /symfony/.env /app/.env
-COPY /symfony/bin /app/bin
-COPY /symfony/config /app/config
-COPY /symfony/src /app/src
-COPY /symfony/public /app/public
+COPY /symfony/composer.json /symfony/composer.json
+COPY /symfony/composer.lock /symfony/composer.lock
+COPY /symfony/symfony.lock /symfony/symfony.lock
+COPY /symfony/.env /symfony/.env
+COPY /symfony/bin /symfony/bin
+COPY /symfony/config /symfony/config
+COPY /symfony/src /symfony/src
+COPY /symfony/public /symfony/public
 
 ENV SYMFONY_PHPUNIT_VERSION=8.3
 
@@ -99,7 +99,7 @@ RUN composer clear-cache; \
     composer dump-env $APP_ENV; \
 	rm .env
 
-RUN mkdir -p /app/var/cache /app/var/log;
+RUN mkdir -p /symfony/var/cache /symfony/var/log;
 
 RUN	if [ "$APP_ENV" = 'prod' ]; then \
 	composer dump-autoload --classmap-authoritative --no-dev; \
@@ -109,7 +109,7 @@ RUN	if [ "$APP_ENV" = 'prod' ]; then \
 	composer run-script post-install-cmd; \
 	fi
 
-VOLUME /app/var
+VOLUME /symfony/var
 
 RUN chmod +x bin/console; sync
 
@@ -133,12 +133,12 @@ FROM nginx:${NGINX_VERSION}-alpine AS nginx
 RUN set -eux; \
     apk add curl --no-cache
 
-WORKDIR /app/public
+WORKDIR /symfony/public
 
 COPY /docker/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.stuff
 COPY /docker/nginx/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY /docker/nginx/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
-COPY --from=php /app/public /app/public
+COPY --from=php /symfony/public /symfony/public
 
 RUN chmod +x /usr/local/bin/docker-entrypoint /usr/local/bin/docker-healthcheck
 

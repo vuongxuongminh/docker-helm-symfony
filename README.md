@@ -34,8 +34,8 @@ This starts the following services:
 
 | Name          |           Description                                               | Ports | Environments |
 |---------------|---------------------------------------------------------------------|------ |--------------|
-| fpm           | FastCGI process manager with PHP-FPM 7.4.3, Composer.               | n/a   | all          |
-| supervisor    | Process control system with PHP 7.4.3, Supervisor 4.1.0, Composer   | 9000  | all          |
+| fpm           | FastCGI process manager with PHP-FPM 7.4.5, Composer.               | n/a   | all          |
+| supervisor    | Process control system with PHP 7.4.5, Supervisor 4.1.0, Composer   | 9000  | all          |
 | nginx         | Reverse proxy handle request with NGINX 1.17                        | 80    | all          |
 | setup         | Setup service help run migration & install Composer package         | n/a   | dev          |
 | filebeat      | Ship logs of Nginx & FPM & Supervisor services                      | n/a   | dev          |

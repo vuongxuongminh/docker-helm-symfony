@@ -13,7 +13,7 @@ metadata:
 spec:
   # Because if we use internal database, in first time install chart database need time to boot up for that reason job may be fail,
   # we should give it retry more time.
-  backoffLimit: 2
+  backoffLimit: 5
   template:
     metadata:
       labels:

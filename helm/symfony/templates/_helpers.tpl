@@ -66,7 +66,7 @@ app: "{{ template "name" . }}"
 {{- end -}}
 
 {{- define "messengerTransportDsn" -}}
-  {{- if .Values.mysql.internal }}
+  {{- if .Values.rabbitmq.internal }}
     {{- printf "amqp://%s:%s@%s:%s/%s" (.Values.rabbitmq.rabbitmq.username) (.Values.rabbitmq.rabbitmq.password) (.Values.rabbitmq.fullnameOverride) (.Values.rabbitmq.service.port | toString) "%2f" -}}
   {{- else }}
     {{- .Values.rabbitmq.externalDsn -}}
