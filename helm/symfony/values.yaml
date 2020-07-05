@@ -37,7 +37,7 @@ php:
   env: 'prod'
   debug: '0'
   secret: '!ChangeMe!'
-  trustedHosts: '^.*\\.example\\.com$'
+  trustedHosts: '^.*\\.example$'
   trustedProxies:
     - 10.0.0.0/8
     - 172.16.0.0/12

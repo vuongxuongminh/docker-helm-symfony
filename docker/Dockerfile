@@ -12,6 +12,7 @@ ARG APCU_VERSION=5.1.18
 ARG AMQP_VERSION=1.9.4
 
 RUN apk add --no-cache \
+        git \
 		acl \
 		fcgi \
 		file \
@@ -77,6 +78,7 @@ COPY /symfony/.env /symfony/.env
 COPY /symfony/bin /symfony/bin
 COPY /symfony/config /symfony/config
 COPY /symfony/src /symfony/src
+COPY /symfony/migrations /symfony/migrations
 COPY /symfony/public /symfony/public
 
 ENV SYMFONY_PHPUNIT_VERSION=8.3
