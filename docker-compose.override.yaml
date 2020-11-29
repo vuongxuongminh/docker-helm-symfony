@@ -84,6 +84,7 @@ services:
       FPM_SERVICE: fpm
     volumes:
       - ./symfony/public:/symfony/public:rw,cached
+      - nginx-log-data:/var/log/nginx:rw
     ports:
       - target: 80
         published: 80
