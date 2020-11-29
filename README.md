@@ -10,6 +10,7 @@ This is a clean template base on `symfony/skeleton` (Symfony 5) with common Symf
 + Mailer.
 + Messenger.
 + ORM.
++ Twig.
 
 And set of Docker services, include basic Helm chart help you save time and easy to deploy it in your Kubernetes cluster.
 
