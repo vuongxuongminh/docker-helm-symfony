@@ -17,6 +17,7 @@ RUN apk add --no-cache \
 		fcgi \
 		file \
 		gettext \
+		py3-pip \
 	;
 
 RUN set -eux; \
@@ -27,7 +28,6 @@ RUN set -eux; \
 		zlib-dev \
 		rabbitmq-c-dev \
 	; \
-	apk add --no-cache python3; \
 	pip3 install supervisor; \
 	docker-php-ext-configure zip; \
 	docker-php-ext-install -j$(nproc) \
