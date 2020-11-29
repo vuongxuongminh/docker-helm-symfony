@@ -47,6 +47,8 @@ services:
       - ./symfony:/symfony:rw,cached
       - fpm-log-data:/symfony/var/log:rw
     depends_on:
+      - rabbitmq
+      - mailhog
       - mysql
 
   supervisor:
@@ -67,6 +69,8 @@ services:
         published: 9000
         protocol: tcp
     depends_on:
+      - rabbitmq
+      - mailhog
       - mysql
 
   nginx:
@@ -79,12 +83,13 @@ services:
       # `fpm` container name use to pass request via `fastcgi_pass`, it useful when you want to change `fpm` service name or container name of it.
       FPM_SERVICE: fpm
     volumes:
-    - ./symfony/public:/symfony/public:rw,cached
-    - nginx-log-data:/var/log/nginx:rw
+      - ./symfony/public:/symfony/public:rw,cached
     ports:
-    - target: 80
-      published: 80
-      protocol: tcp
+      - target: 80
+        published: 80
+        protocol: tcp
+    depends_on:
+      - fpm
 
   mailhog:
     image: mailhog/mailhog
@@ -100,38 +105,40 @@ services:
         published: 15672
         protocol: tcp
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
+  grafana:
+    image: grafana/grafana
     environment:
-      discovery.type: "single-node"
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.6.0
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./docker/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
     depends_on:
-      - elasticsearch
-    environment:
-      SERVER_NAME: localhost
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      - promtail
     ports:
-      - target: 5601
-        published: 5601
+      - target: 3000
+        published: 3000
         protocol: tcp
 
-  filebeat:
-    image: docker.elastic.co/beats/filebeat:7.6.0
-    command: "filebeat -e -strict.perms=false"
+  loki:
+    image: grafana/loki
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail
     depends_on:
-      - elasticsearch
-      - kibana
+      - loki
     volumes:
-      - ./docker/dev-filebeat/modules.d:/usr/share/filebeat/modules.d:ro
-      - ./docker/dev-filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-      - fpm-log-data:/usr/share/filebeat/logs/fpm:ro
-      - supervisor-log-data:/usr/share/filebeat/logs/supervisor:ro
-      - nginx-log-data:/usr/share/filebeat/logs/nginx:ro
+      - fpm-log-data:/var/log/fpm
+      - nginx-log-data:/var/log/nginx
+      - supervisor-log-data:/var/log/supervisor
+      - ./docker/promtail:/etc/promtail:ro
+    command: -config.file=/etc/promtail/config.yaml
 
 volumes:
   db-data: {}
+  grafana-data: {}
   fpm-log-data: {}
   nginx-log-data: {}
   supervisor-log-data: {}

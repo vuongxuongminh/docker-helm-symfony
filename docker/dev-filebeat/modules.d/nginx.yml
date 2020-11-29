@@ -1,7 +1,0 @@
-- module: nginx
-  access:
-    enabled: true
-    var.paths: ["${path.config}/logs/nginx/symfony_access.log*"]
-  error:
-    enabled: true
-    var.paths: ["${path.config}/logs/nginx/symfony_error.log*"]

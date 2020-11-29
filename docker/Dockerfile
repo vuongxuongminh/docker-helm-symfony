@@ -1,4 +1,4 @@
-ARG PHP_VERSION='7.4.5'
+ARG PHP_VERSION='7.4.12'
 ARG NGINX_VERSION='1.17'
 
 # "php" stage
@@ -55,7 +55,7 @@ RUN set -eux; \
 	apk add --no-cache --virtual .api-phpexts-rundeps $runDeps; \
 	apk del .build-deps
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN chmod +x /usr/bin/composer; sync
 
@@ -80,8 +80,6 @@ COPY /symfony/config /symfony/config
 COPY /symfony/src /symfony/src
 COPY /symfony/migrations /symfony/migrations
 COPY /symfony/public /symfony/public
-
-ENV SYMFONY_PHPUNIT_VERSION=8.3
 
 # Install Symfony Flex globally to speed up download of Composer packages (parallelized prefetching)
 RUN set -eux; \
