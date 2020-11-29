@@ -1,3 +1,9 @@
+2.1.0
+-------------------------------------------------------------------
++ Replace EFK to GPL.
++ Upgrade PHP version to 7.4.12.
++ Upgrade Symfony packages version to 5.1.8.
+
 2.0.0
 -------------------------------------------------------------------
 + Upgrade Symfony to version 5.1.*.
