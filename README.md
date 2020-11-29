@@ -5,10 +5,11 @@
 ## About it
 
 This is a clean template base on `symfony/skeleton` (Symfony 5) with common Symfony packages:
- 
-+ Mailer
-+ Messenger
-+ ORM
+
++ Debug (dev env).
++ Mailer.
++ Messenger.
++ ORM.
 
 And set of Docker services, include basic Helm chart help you save time and easy to deploy it in your Kubernetes cluster.
 
