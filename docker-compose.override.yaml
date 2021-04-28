@@ -5,26 +5,15 @@ x-build:
     APP_ENV: 'dev'
     APP_DEBUG: '1'
   - &build-cache
-    - ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
-    - ${NGINX_IMAGE:-vuongxuongminh/docker-helm-symfony-nginx}:dev
+    - ${SYMFONY_IMAGE:-vuongxuongminh/docker-helm-symfony}:dev
 
 services:
-  mysql:
-    image: mysql:8
-    command: ['--default-authentication-plugin=mysql_native_password']
-    environment:
-      MYSQL_DATABASE: 'test'
-      MYSQL_ROOT_PASSWORD: 'root'
-    volumes:
-      - db-data:/var/lib/mysql
-
   setup:
-    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
+    image: ${SYMFONY_IMAGE:-vuongxuongminh/docker-helm-symfony}:dev
     command: ['setup']
     build:
       context: .
-      dockerfile: ./docker/Dockerfile
-      target: php
+      dockerfile: ./docker/php/Dockerfile
       cache_from: *build-cache
       args:
         << : *build-args
@@ -32,8 +21,6 @@ services:
       << : *build-args
     volumes:
       - ./symfony:/symfony:rw
-    depends_on:
-      - mysql
 
   fpm:
     image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
@@ -45,66 +32,12 @@ services:
       << : *build-args
     volumes:
       - ./symfony:/symfony:rw,cached
-      - fpm-log-data:/symfony/var/log:rw
-    depends_on:
-      - rabbitmq
-      - mailhog
-      - mysql
-
-  supervisor:
-    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
-    build:
-      cache_from: *build-cache
-      args:
-        << : *build-args
-    environment:
-      << : *build-args
-      SUPERVISOR_USERNAME: root
-      SUPERVISOR_PASSWORD: root
-    volumes:
-      - ./symfony:/symfony:rw,cached
-      - supervisor-log-data:/symfony/var/log:rw
-    ports:
-      - target: 9000
-        published: 9000
-        protocol: tcp
-    depends_on:
-      - rabbitmq
-      - mailhog
-      - mysql
+      - log-data:/symfony/var/log:rw
 
   nginx:
-    image: ${NGINX_IMAGE:-vuongxuongminh/docker-helm-symfony-nginx}:dev
-    build:
-      cache_from: *build-cache
-      args:
-        << : *build-args
-    environment:
-      # `fpm` container name use to pass request via `fastcgi_pass`, it useful when you want to change `fpm` service name or container name of it.
-      FPM_SERVICE: fpm
     volumes:
       - ./symfony/public:/symfony/public:rw,cached
-      - nginx-log-data:/var/log/nginx:rw
-    ports:
-      - target: 80
-        published: 80
-        protocol: tcp
-    depends_on:
-      - fpm
-
-  mailhog:
-    image: mailhog/mailhog
-    ports:
-      - target: 8025
-        published: 8025
-        protocol: tcp
-
-  rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    ports:
-      - target: 15672
-        published: 15672
-        protocol: tcp
+      - ./docker/nginx/default.conf:/opt/bitnami/nginx/conf/server_blocks/default.conf:ro
 
   grafana:
     image: grafana/grafana
@@ -131,15 +64,11 @@ services:
     depends_on:
       - loki
     volumes:
-      - fpm-log-data:/var/log/fpm
-      - nginx-log-data:/var/log/nginx
-      - supervisor-log-data:/var/log/supervisor
+      - log-data:/app/var/log
       - ./docker/promtail:/etc/promtail:ro
     command: -config.file=/etc/promtail/config.yaml
 
 volumes:
   db-data: {}
   grafana-data: {}
-  fpm-log-data: {}
-  nginx-log-data: {}
-  supervisor-log-data: {}
+  log-data: {}
