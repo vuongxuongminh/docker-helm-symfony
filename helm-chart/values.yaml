@@ -4,7 +4,7 @@ global:
       repository: vuongxuongminh/docker-helm-symfony
       tag: prod
       pullSecrets: []
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
     env: 'prod'
     debug: '0'
     secret: '!ChangeMe!'

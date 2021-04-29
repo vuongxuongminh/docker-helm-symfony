@@ -27,7 +27,7 @@ RUN set -exu; \
     fi; \
     rm /usr/local/bin/install-php-extensions;
 
-COPY /docker/php/conf.d/$APP_ENV.ini $PHP_INI_DIR/conf.d/config.ini
+COPY /docker/fpm/conf.d/$APP_ENV.ini $PHP_INI_DIR/conf.d/config.ini
 
 WORKDIR /symfony
 
