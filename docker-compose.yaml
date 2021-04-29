@@ -5,7 +5,7 @@ services:
     command: ['fpm']
     build:
       context: .
-      dockerfile: ./docker/php/Dockerfile
+      dockerfile: ./docker/fpm/Dockerfile
     healthcheck:
       test: ['CMD', 'docker-healthcheck', 'fpm']
       interval: 10s

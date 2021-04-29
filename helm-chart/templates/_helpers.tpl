@@ -37,38 +37,10 @@ release: {{ .Release.Name }}
 app: "{{ template "name" . }}"
 {{- end -}}
 
-{{- define "php" -}}
-  {{- printf "%s-php" (include "fullname" .) -}}
-{{- end -}}
-
 {{- define "fpm" -}}
   {{- printf "%s-fpm" (include "fullname" .) -}}
 {{- end -}}
 
-{{- define "supervisor" -}}
-  {{- printf "%s-supervisor" (include "fullname" .) -}}
-{{- end -}}
-
 {{- define "nginx" -}}
   {{- printf "%s-nginx" (include "fullname" .) -}}
-{{- end -}}
-
-{{- define "hook" -}}
-    {{- printf "%s-hook" (include "fullname" .) -}}
-{{- end -}}
-
-{{- define "databaseDsn" -}}
-  {{- if .Values.mysql.internal }}
-    {{- printf "mysql://%s:%s@%s/%s?serverVersion=5.7" (.Values.mysql.mysqlUser) (.Values.mysql.mysqlPassword) (.Values.mysql.fullnameOverride) (.Values.mysql.mysqlDatabase) -}}
-  {{- else }}
-    {{- .Values.mysql.externalDsn -}}
-  {{- end }}
-{{- end -}}
-
-{{- define "messengerTransportDsn" -}}
-  {{- if .Values.rabbitmq.internal }}
-    {{- printf "amqp://%s:%s@%s:%s/%s" (.Values.rabbitmq.rabbitmq.username) (.Values.rabbitmq.rabbitmq.password) (.Values.rabbitmq.fullnameOverride) (.Values.rabbitmq.service.port | toString) "%2f" -}}
-  {{- else }}
-    {{- .Values.rabbitmq.externalDsn -}}
-  {{- end }}
 {{- end -}}

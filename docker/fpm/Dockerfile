@@ -58,8 +58,8 @@ RUN { \
 
 VOLUME /symfony/var
 
-COPY /docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-COPY /docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
+COPY /docker/fpm/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY /docker/fpm/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 
 RUN chmod +x /usr/local/bin/docker-entrypoint /usr/local/bin/docker-healthcheck
 

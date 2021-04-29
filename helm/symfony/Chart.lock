@@ -1,9 +1,0 @@
-dependencies:
-- name: mysql
-  repository: https://charts.helm.sh/stable
-  version: 1.6.9
-- name: rabbitmq
-  repository: https://charts.bitnami.com/bitnami
-  version: 6.18.9
-digest: sha256:8b1b4689a2d032e29dace81ca0f14e04af465470f990361d5502478caedbdd7f
-generated: "2020-12-01T23:40:27.008321715+07:00"

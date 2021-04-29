@@ -1,0 +1,59 @@
+# Use this set to assign a list of default pullSecrets
+#  - name: docker-registry-secret
+#  - name: internal-registry-secret
+global:
+  fpm:
+    image:
+      repository: vuongxuongminh/docker-helm-symfony
+      tag: prod
+      pullSecrets: []
+      pullPolicy: Always
+    env: 'prod'
+    debug: '0'
+    secret: '!ChangeMe!'
+    trustedHosts: '^.*\\.example$'
+    trustedProxies:
+      - 10.0.0.0/8
+      - 172.16.0.0/12
+      - 192.168.0.0/16
+
+nginx:
+  replicaCount: 1
+  existingServerBlockConfigmap: nginx-server-block
+  extraVolumes:
+    - name: bundle-assets
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: bundle-assets
+      mountPath: /symfony/public/bundles/
+  sidecars:
+    - name: fpm
+      image: '{{ .Values.global.fpm.image.repository }}:{{ .Values.global.fpm.image.tag }}'
+      imagePullPolicy: '{{ .Values.global.fpm.image.pullPolicy }}'
+      command:
+        - docker-entrypoint
+      args:
+        - fpm
+      livenessProbe:
+        exec:
+          command:
+            - docker-healthcheck
+        initialDelaySeconds: 10
+        periodSeconds: 5
+      readinessProbe:
+        exec:
+          command:
+            - docker-healthcheck
+        initialDelaySeconds: 10
+        timeoutSeconds: 5
+      envFrom:
+        - configMapRef:
+            name: '{{ template "fpm" . }}'
+        - secretRef:
+            name: '{{ template "fpm" . }}'
+      ports:
+        - name: fpm
+          containerPort: 9000
+      volumeMounts:
+        - name: bundle-assets
+          mountPath: /symfony/public/bundles/
