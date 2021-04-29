@@ -1,6 +1,3 @@
-# Use this set to assign a list of default pullSecrets
-#  - name: docker-registry-secret
-#  - name: internal-registry-secret
 global:
   fpm:
     image:
