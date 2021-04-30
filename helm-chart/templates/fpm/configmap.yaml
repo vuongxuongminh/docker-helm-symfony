@@ -7,5 +7,3 @@ metadata:
 data:
   APP_ENV: {{ .Values.global.fpm.env | quote }}
   APP_DEBUG: {{ .Values.global.fpm.debug | quote }}
-  TRUSTED_HOSTS: {{ .Values.global.fpm.trustedHosts | quote }}
-  TRUSTED_PROXIES: {{ join "," .Values.global.fpm.trustedProxies | quote }}

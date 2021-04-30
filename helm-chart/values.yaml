@@ -3,16 +3,10 @@ global:
     image:
       repository: vuongxuongminh/docker-helm-symfony
       tag: prod
-      pullSecrets: []
       pullPolicy: IfNotPresent
     env: 'prod'
     debug: '0'
     secret: '!ChangeMe!'
-    trustedHosts: '^.*\\.example$'
-    trustedProxies:
-      - 10.0.0.0/8
-      - 172.16.0.0/12
-      - 192.168.0.0/16
 
 nginx:
   replicaCount: 1

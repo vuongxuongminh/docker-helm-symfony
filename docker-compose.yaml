@@ -11,17 +11,17 @@ services:
       interval: 10s
       timeout: 3s
       retries: 3
-      start_period: 30s
+      start_period: 10s
     network_mode: service:nginx
 
   nginx:
     image: bitnami/nginx
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost/status']
+      test: ['CMD', 'curl', '-f', 'http://localhost:8080/status']
       interval: 10s
       timeout: 3s
       retries: 3
-      start_period: 30s
+      start_period: 10s
     ports:
     - target: 8080
       published: 80
