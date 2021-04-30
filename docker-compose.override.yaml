@@ -23,7 +23,7 @@ services:
       - ./symfony:/symfony
 
   fpm:
-    image: ${IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
+    image: ${IMAGE:-vuongxuongminh/docker-helm-symfony}:dev
     build:
       cache_from: *build-cache
       args:
