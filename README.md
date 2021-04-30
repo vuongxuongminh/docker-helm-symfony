@@ -29,8 +29,8 @@ This starts the following services:
 
 | Name          |           Description                                               | Ports | Environments |
 |---------------|---------------------------------------------------------------------|------ |--------------|
-| fpm           | FastCGI process manager with PHP-FPM 7.4.12, Composer.              | n/a   | all          |
-| nginx         | Reverse proxy handle request with NGINX 1.17                        | 80    | all          |
+| fpm           | FastCGI process manager with PHP-FPM, Composer.              | n/a   | all          |
+| nginx         | Reverse proxy handle request with NGINX                        | 80    | all          |
 | setup         | Setup service help run migration & install Composer package         | n/a   | dev          |
 
 This results in the following running containers:

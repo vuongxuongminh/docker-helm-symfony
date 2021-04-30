@@ -31,16 +31,10 @@ chart: {{ .Chart.Name }}
 app: "{{ template "name" . }}"
 {{- end -}}
 
-{{/* matchLabels */}}
-{{- define "matchLabels" -}}
-release: {{ .Release.Name }}
-app: "{{ template "name" . }}"
-{{- end -}}
-
 {{- define "fpm" -}}
-  {{- printf "%s-fpm" (include "fullname" .) -}}
+fpm
 {{- end -}}
 
 {{- define "nginx" -}}
-  {{- printf "%s-nginx" (include "fullname" .) -}}
+nginx
 {{- end -}}
