@@ -15,31 +15,31 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 ARG APP_ENV
 ARG APP_DEBUG
 
+COPY /docker/fpm/conf.d/ $PHP_INI_DIR/conf.d/
+
 RUN set -exu; \
-    install-php-extensions gd intl zip pcntl apcu opcache @composer; \
-    if [ "${APP_DEBUG}" = "1" ]; then \
-        install-php-extensions xdebug; \
-    fi; \
     if [ "${APP_ENV}" = "dev" ]; then \
         ln -sf $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini; \
+        ln -sf $PHP_INI_DIR/conf.d/custom.ini-development $PHP_INI_DIR/custom.ini; \
     else \
         ln -sf $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini; \
+        ln -sf $PHP_INI_DIR/conf.d/custom.ini-production $PHP_INI_DIR/custom.ini; \
     fi; \
+    install-php-extensions gd intl zip pcntl apcu opcache @composer; \
     rm /usr/local/bin/install-php-extensions;
-
-COPY /docker/fpm/conf.d/$APP_ENV.ini $PHP_INI_DIR/conf.d/config.ini
 
 WORKDIR /symfony
 
 ## Remove it and copy your source here.
-RUN if [ "${APP_ENV}" = 'prod' ]; then \
+RUN if [ "${APP_ENV}" = "prod" ]; then \
 	composer create-project symfony/skeleton . --prefer-dist --no-dev --no-progress --no-interaction; \
 	else \
     composer create-project symfony/skeleton . --prefer-dist --no-progress --no-interaction; \
     fi
 
 RUN mkdir -p var/cache var/log;
-RUN if [ "${APP_ENV}" = 'prod' ]; then \
+
+RUN if [ "${APP_ENV}" = "prod" ]; then \
 	composer install --prefer-dist --no-dev --no-scripts --no-progress --no-suggest; \
 	composer dump-autoload --classmap-authoritative --no-dev; \
 	else \
@@ -64,4 +64,5 @@ COPY /docker/fpm/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 RUN chmod +x /usr/local/bin/docker-entrypoint /usr/local/bin/docker-healthcheck
 
 ENTRYPOINT ["docker-entrypoint"]
+
 CMD ["fpm"]

@@ -18,19 +18,30 @@ nginx:
   replicaCount: 1
   existingServerBlockConfigmap: nginx-server-block
   extraVolumes:
-    - name: bundle-assets
+    - name: asset-bundles
       emptyDir: {}
   extraVolumeMounts:
-    - name: bundle-assets
+    - name: asset-bundles
       mountPath: /symfony/public/bundles/
+  initContainers:
+    - name: publish-asset-bundles
+      image: '{{ .Values.global.fpm.image.repository }}:{{ .Values.global.fpm.image.tag }}'
+      imagePullPolicy: '{{ .Values.global.fpm.image.pullPolicy }}'
+      args:
+        - composer
+        - auto-scripts
+      envFrom:
+        - configMapRef:
+            name: '{{ template "fpm" . }}'
+        - secretRef:
+            name: '{{ template "fpm" . }}'
+      volumeMounts:
+        - name: asset-bundles
+          mountPath: /symfony/public/bundles/
   sidecars:
     - name: fpm
       image: '{{ .Values.global.fpm.image.repository }}:{{ .Values.global.fpm.image.tag }}'
       imagePullPolicy: '{{ .Values.global.fpm.image.pullPolicy }}'
-      command:
-        - docker-entrypoint
-      args:
-        - fpm
       livenessProbe:
         exec:
           command:
@@ -52,5 +63,5 @@ nginx:
         - name: fpm
           containerPort: 9000
       volumeMounts:
-        - name: bundle-assets
+        - name: asset-bundles
           mountPath: /symfony/public/bundles/

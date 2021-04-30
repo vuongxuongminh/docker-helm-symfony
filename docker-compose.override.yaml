@@ -13,14 +13,14 @@ services:
     command: ['setup']
     build:
       context: .
-      dockerfile: ./docker/php/Dockerfile
+      dockerfile: ./docker/fpm/Dockerfile
       cache_from: *build-cache
       args:
         << : *build-args
     environment:
       << : *build-args
     volumes:
-      - ./symfony:/symfony:rw
+      - ./symfony:/symfony
 
   fpm:
     image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
@@ -31,43 +31,9 @@ services:
     environment:
       << : *build-args
     volumes:
-      - ./symfony:/symfony:rw,cached
-      - log-data:/symfony/var/log:rw
+      - ./symfony:/symfony
 
   nginx:
     volumes:
-      - ./symfony/public:/symfony/public:rw,cached
+      - ./symfony/public:/symfony/public
       - ./docker/nginx/default.conf:/opt/bitnami/nginx/conf/server_blocks/default.conf:ro
-
-  grafana:
-    image: grafana/grafana
-    environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: admin
-    volumes:
-      - grafana-data:/var/lib/grafana
-      - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources:ro
-      - ./docker/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
-    depends_on:
-      - promtail
-    ports:
-      - target: 3000
-        published: 3000
-        protocol: tcp
-
-  loki:
-    image: grafana/loki
-    command: -config.file=/etc/loki/local-config.yaml
-
-  promtail:
-    image: grafana/promtail
-    depends_on:
-      - loki
-    volumes:
-      - log-data:/app/var/log
-      - ./docker/promtail:/etc/promtail:ro
-    command: -config.file=/etc/promtail/config.yaml
-
-volumes:
-  grafana-data: {}
-  log-data: {}
