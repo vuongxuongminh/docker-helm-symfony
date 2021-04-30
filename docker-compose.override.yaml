@@ -5,11 +5,11 @@ x-build:
     APP_ENV: 'dev'
     APP_DEBUG: '1'
   - &build-cache
-    - ${SYMFONY_IMAGE:-vuongxuongminh/docker-helm-symfony}:dev
+    - ${IMAGE:-vuongxuongminh/docker-helm-symfony}:dev
 
 services:
   setup:
-    image: ${SYMFONY_IMAGE:-vuongxuongminh/docker-helm-symfony}:dev
+    image: ${IMAGE:-vuongxuongminh/docker-helm-symfony}:dev
     command: ['setup']
     build:
       context: .
@@ -23,7 +23,7 @@ services:
       - ./symfony:/symfony
 
   fpm:
-    image: ${PHP_IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
+    image: ${IMAGE:-vuongxuongminh/docker-helm-symfony-php}:dev
     build:
       cache_from: *build-cache
       args:

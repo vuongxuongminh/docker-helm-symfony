@@ -5,11 +5,11 @@ x-build:
     APP_ENV: 'prod'
     APP_DEBUG: '0'
   - &build-cache
-    - ${SYMFONY_IMAGE:-vuongxuongminh/docker-helm-symfony}:prod
+    - ${IMAGE:-vuongxuongminh/docker-helm-symfony}:prod
 
 services:
   fpm:
-    image: ${SYMFONY_IMAGE:-vuongxuongminh/docker-helm-symfony}:prod
+    image: ${IMAGE:-vuongxuongminh/docker-helm-symfony}:prod
     build:
       cache_from: *build-cache
       args:
