@@ -20,7 +20,7 @@ jobs:
         run: curl http://localhost | grep "Welcome to Symfony!"
   build:
     if: ${{ github.ref == 'refs/heads/main' }}
-    needs: [test-setup]
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
