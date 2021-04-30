@@ -1,6 +1,6 @@
 # Modern containerize template for Symfony
 
-![Build Status](https://github.com/vuongxuongminh/docker-helm-symfony/workflows/CI/badge.svg)
+![Build Status](https://github.com/vuongxuongminh/docker-helm-symfony/actions/workflows/ci.yaml/badge.svg)
 
 ## About it
 
@@ -96,7 +96,7 @@ The following table lists the configurable parameters of this chart and their de
 Specify each parameter using the --set key=value[,key=value] argument to helm install. For example,
 
 ```shell script
-$ helm install app ./helm/symfony \
+$ helm install app ./helm-chart \
   --set global.fpm.env=prod,global.fpm.debug=1
 ```
 
@@ -105,7 +105,7 @@ The above command sets the environment variables APP_ENV to `prod`, APP_DEBUG to
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```shell script
-$ helm install app ./helm/symfony -f values.yaml
+$ helm install app ./helm-chart -f values.yaml
 ```
 
-> Tip: You can use the default [values.yaml](/helm-chart/values.yaml), read more Nginx parameters at [here](https://github.com/bitnami/charts/tree/master/bitnami/nginx).
+> Tip: You can use the default [values.yaml](/helm-chart/values.yaml) and read more Nginx parameters at [here](https://github.com/bitnami/charts/tree/master/bitnami/nginx).
