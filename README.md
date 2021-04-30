@@ -49,9 +49,6 @@ If you want to change a PHP version, open `docker-compose.yaml` and add build ar
 
 + `PHP_VERSION` for change php version (ex: `PHP_VERSION: '7.4'`).
 
-
-Open [Dockerfile](/docker/Dockerfile) to see more build args.
-
 Now you can visiting your Symfony app: http://localhost
 
 ## Deploy project into Kubernetes cluster
