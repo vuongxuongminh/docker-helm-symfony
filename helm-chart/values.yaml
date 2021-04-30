@@ -1,0 +1,61 @@
+global:
+  fpm:
+    image:
+      repository: vuongxuongminh/docker-helm-symfony
+      tag: prod
+      pullPolicy: IfNotPresent
+    env: 'prod'
+    debug: '0'
+    secret: '!ChangeMe!'
+
+nginx:
+  replicaCount: 1
+  existingServerBlockConfigmap: nginx-server-block
+  extraVolumes:
+    - name: asset-bundles
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: asset-bundles
+      mountPath: /symfony/public/bundles/
+  initContainers:
+    - name: publish-asset-bundles
+      image: '{{ .Values.global.fpm.image.repository }}:{{ .Values.global.fpm.image.tag }}'
+      imagePullPolicy: '{{ .Values.global.fpm.image.pullPolicy }}'
+      args:
+        - composer
+        - auto-scripts
+      envFrom:
+        - configMapRef:
+            name: '{{ template "fpm" . }}'
+        - secretRef:
+            name: '{{ template "fpm" . }}'
+      volumeMounts:
+        - name: asset-bundles
+          mountPath: /symfony/public/bundles/
+  sidecars:
+    - name: fpm
+      image: '{{ .Values.global.fpm.image.repository }}:{{ .Values.global.fpm.image.tag }}'
+      imagePullPolicy: '{{ .Values.global.fpm.image.pullPolicy }}'
+      livenessProbe:
+        exec:
+          command:
+            - docker-healthcheck
+        initialDelaySeconds: 10
+        periodSeconds: 5
+      readinessProbe:
+        exec:
+          command:
+            - docker-healthcheck
+        initialDelaySeconds: 10
+        timeoutSeconds: 5
+      envFrom:
+        - configMapRef:
+            name: '{{ template "fpm" . }}'
+        - secretRef:
+            name: '{{ template "fpm" . }}'
+      ports:
+        - name: fpm
+          containerPort: 9000
+      volumeMounts:
+        - name: asset-bundles
+          mountPath: /symfony/public/bundles/
