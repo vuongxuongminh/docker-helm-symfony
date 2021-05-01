@@ -29,9 +29,9 @@ This starts the following services:
 
 | Name          |           Description                                               | Ports | Environments |
 |---------------|---------------------------------------------------------------------|------ |--------------|
-| fpm           | FastCGI process manager with PHP-FPM, Composer.              | n/a   | all          |
-| nginx         | Reverse proxy handle request with NGINX                        | 80    | all          |
-| setup         | Setup service help run migration & install Composer package         | n/a   | dev          |
+| fpm           | FastCGI process manager with PHP-FPM, Composer.                     | n/a   | all          |
+| nginx         | Reverse proxy handle request with NGINX                             | 80    | all          |
+| setup         | Setup service help install Composer package                         | n/a   | dev          |
 
 This results in the following running containers:
 
@@ -84,17 +84,16 @@ The following table lists the configurable parameters of this chart and their de
 | Parameter                                    | Description                                                                                                                            | Default                                                                                   |
 |----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
 | imagePullSecrets                             | Docker registry secret names as an array.                                                                                              | `[]`                                                                                      |
-| global.fpm.image.repository                  | Image repo.                                                                                                                        | `vuongxuongminh/docker-helm-symfony-php`                                                  |
-| global.fpm.image.tag                         | Image tag.                                                                                                                         | `prod`                                                                                    |
-| global.fpm.image.pullPolicy                  | Image pull policy.                                                                                                                         | `prod`                                                                                    |
-| global.fpm.env                               | Use to set `APP_ENV` env in FPM container.                                                                               | `prod`                                                                                    |
-| global.fpm.debug                             | Use to set `APP_DEBUG` env in FPM container.                                                                             | `0`                                                                                       |
+| global.fpm.image.repository                  | Image repo.                                                                                                                            | `vuongxuongminh/docker-helm-symfony`                                                      |
+| global.fpm.image.tag                         | Image tag.                                                                                                                             | `prod`                                                                                    |
+| global.fpm.image.pullPolicy                  | Image pull policy.                                                                                                                     | `IfNotPresent`                                                                            |
+| global.fpm.env                               | Use to set `APP_ENV` env in FPM container.                                                                                             | `prod`                                                                                    |
+| global.fpm.debug                             | Use to set `APP_DEBUG` env in FPM container.                                                                                           | `0`                                                                                       |
 
 Specify each parameter using the --set key=value[,key=value] argument to helm install. For example,
 
 ```shell script
-$ helm install app ./helm-chart \
-  --set global.fpm.env=prod,global.fpm.debug=1
+$ helm install app ./helm-chart/ --set global.fpm.env="prod" --set global.fpm.debug="1"
 ```
 
 The above command sets the environment variables APP_ENV to `prod`, APP_DEBUG to `1`.
@@ -102,7 +101,7 @@ The above command sets the environment variables APP_ENV to `prod`, APP_DEBUG to
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```shell script
-$ helm install app ./helm-chart -f values.yaml
+$ helm install app ./helm-chart/ -f values.yaml
 ```
 
 > Tip: You can use the default [values.yaml](/helm-chart/values.yaml) and read more Nginx parameters at [here](https://github.com/bitnami/charts/tree/master/bitnami/nginx).
